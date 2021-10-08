@@ -4,18 +4,18 @@ import Alert from 'react-bootstrap/Alert'
 class AlertMessage extends React.Component {
 
     render() {
-        return(
+        return (
             <>
-            {(this.props.errorAlert) ?
-             <Alert variant="danger" onClose={this.props.onErrorClose} dismissible>
-        <Alert.Heading></Alert.Heading>
-        <p>
-         {this.props.errorCode}
-        </p>
-        
-      </Alert>
-      : ''
-    }
+                {(this.props.errorAlert) ?
+                    <Alert variant="danger" onClose={this.props.onErrorClose} dismissible>
+                        <Alert.Heading></Alert.Heading>
+                        <p>
+                            {this.props.errorCode}
+                        </p>
+
+                    </Alert>
+                    : ''
+                }
             </>
 
 
