@@ -1,6 +1,8 @@
 import './App.css';
 import React from 'react';
 import axios from 'axios';
+import Map from './components/Map.js'
+import AlertMessage  from './components/AlertMessage.js';
 
 class App extends React.Component {
   constructor(props){
@@ -8,9 +10,16 @@ class App extends React.Component {
     this.state = {
       cityName: '',
       locationObj: {},
-      mapImg: ''      
+      mapImg: '',  
+      errorCode: '',   
+      errorAlert: false
     }
     //functions
+  }
+
+
+  onErrorClose = () => {
+    this.setState({errorAlert:false})
   }
 
   getLocation = async (event) => {
@@ -23,34 +32,23 @@ class App extends React.Component {
     console.log(URL);
 
     try {
+
       let locData = await axios.get(URL);
-      // Set state with city data from JSON file
       this.setState({
-        locationObj:
-          locData.data[0],
-
+        locationObj: locData.data[0]
       });
 
-
-      let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.locationObj.lat},${this.state.locationObj.lon}&zoom=5`;
-      let mapObj = await axios.get(mapURL);
-
-
-      //Response obj.data
-      console.log(locData.data[0])
-      console.log(mapURL);
-      //Set it to setate
+      let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.locationObj.lat},${this.state.locationObj.lon}&zoom=12`;
       this.setState({
-        
-        mapImg: mapObj.data
-
+        mapImg: mapURL
       });
-      console.log(this.state.locationObj);
-      console.log(mapObj);
+
     }
     //If there is an error in the try
     catch (error) {
       console.log('there was an error:', error);
+      this.setState({errorCode: error.message})
+      this.setState({errorAlert: true})
     }
 
   }
@@ -74,14 +72,16 @@ class App extends React.Component {
         >Explore!</button>
       </form>
 
-      
-      <div>
-        <h3>{this.state.cityName}</h3>
-        <p>Latitude: {this.state.locationObj.lat}</p>
-        <p>Longitude: {this.state.locationObj.lon}</p>
-        <p>{this.state.mapImg}</p>
-        <img src={this.state.mapImg} alt='map'></img>
-      </div>
+      <Map 
+        mapImg={this.state.mapImg}
+        locationObj={this.state.locationObj}
+        />
+
+      <AlertMessage 
+        errorCode={this.state.errorCode}
+        errorAlert={this.state.errorAlert}
+        onErrorClose={this.onErrorClose}
+        />
     </>
   );
 }
