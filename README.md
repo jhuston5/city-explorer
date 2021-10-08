@@ -15,6 +15,8 @@ App is using React to create a Card to match up user inputted data to an API cal
 
 I used the Trello board provided to first create a functioning version of the App by just returning the data that I needed. In the latest version I created the components to render the map and error message.
 
+Lab-06-wrrc-model.png
+
 ## Change Log
 
 ### Map Feature:
