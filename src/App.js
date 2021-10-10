@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import Map from './components/Map.js'
 import AlertMessage  from './components/AlertMessage.js';
+import Weather from './components/Weather';
 
 class App extends React.Component {
   constructor(props){
@@ -10,6 +11,7 @@ class App extends React.Component {
     this.state = {
       cityName: '',
       locationObj: {},
+      weatherData: [],
       mapImg: '',  
       errorCode: '',   
       errorAlert: false
@@ -43,6 +45,13 @@ class App extends React.Component {
         mapImg: mapURL
       });
 
+      let allWeatherArr = await axios.get(`http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}&city=${this.state.cityName}`);
+      this.setState({
+        weatherData: allWeatherArr
+      })
+
+     
+
     }
     //If there is an error in the try
     catch (error) {
@@ -52,7 +61,8 @@ class App extends React.Component {
     }
 
   }
-  
+ 
+
   
   
 
@@ -76,6 +86,12 @@ class App extends React.Component {
         mapImg={this.state.mapImg}
         locationObj={this.state.locationObj}
         />
+
+      <Weather 
+        cityName={this.state.cityName}
+        weatherData={this.state.weatherData}
+
+       />
 
       <AlertMessage 
         errorCode={this.state.errorCode}
