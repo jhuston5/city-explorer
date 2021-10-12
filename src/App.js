@@ -45,12 +45,13 @@ class App extends React.Component {
         mapImg: mapURL
       });
 
-      let allWeatherArr = await axios.get(`http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}&city=${this.state.cityName}`);
+      //Edited await to only include City Name in the search query
+      let allWeatherArr = await axios.get(`http://localhost:3001/weather?searchQuery=${this.state.cityName}`);
       this.setState({
-        weatherData: allWeatherArr
+        weatherData: JSON.stringify(allWeatherArr)
       })
 
-     
+     console.log(this.state.weatherData);
 
     }
     //If there is an error in the try
