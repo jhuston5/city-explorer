@@ -10,7 +10,7 @@ class Map extends React.Component {
           <Card style={{ width: '18rem' }}>
             <Card.Img variant="top" src={this.props.mapImg} />
             <Card.Body>
-              <Card.Title></Card.Title>
+              <Card.Title>{this.props.cityName}</Card.Title>
               <Card.Text>
                 <p>Latitude: {this.props.locationObj.lat}</p>
                 <p>Longitude: {this.props.locationObj.lon}</p>
