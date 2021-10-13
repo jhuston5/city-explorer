@@ -14,7 +14,8 @@ class App extends React.Component {
       weatherData: [],
       mapImg: '',  
       errorCode: '',   
-      errorAlert: false
+      errorAlert: false,
+      showWeather: false
     }
     //functions
   }
@@ -26,12 +27,9 @@ class App extends React.Component {
 
   getLocation = async (event) => {
     event.preventDefault()
-    console.log('button pushed', this.state.cityName);
-    
-    console.log(process.env.REACT_APP_LOCATION_API_KEY);
+
     let URL = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_API_KEY}&q=${this.state.cityName}&format=json`;
 
-    console.log(URL);
 
     try {
 
@@ -47,8 +45,11 @@ class App extends React.Component {
 
       //Edited await to only include City Name in the search query
       let allWeatherArr = await axios.get(`http://localhost:3001/weather?searchQuery=${this.state.cityName}`);
+      console.log(allWeatherArr);
+
       this.setState({
-        weatherData: JSON.stringify(allWeatherArr)
+        weatherData: allWeatherArr.data,
+        showWeather: true
       })
 
      console.log(this.state.weatherData);
@@ -56,7 +57,7 @@ class App extends React.Component {
     }
     //If there is an error in the try
     catch (error) {
-      console.log('there was an error:', error);
+    
       this.setState({errorCode: error.message})
       this.setState({errorAlert: true})
     }
@@ -69,6 +70,9 @@ class App extends React.Component {
 
 
   render() {
+
+
+
   return (
     <>
       <h1>Enter A City!</h1>
@@ -84,15 +88,17 @@ class App extends React.Component {
       </form>
 
       <Map 
+        cityName={this.state.cityName}
         mapImg={this.state.mapImg}
         locationObj={this.state.locationObj}
         />
 
-      <Weather 
-        cityName={this.state.cityName}
-        weatherData={this.state.weatherData}
-
-       />
+      {/* {this.props.weatherData.map} */}
+      {
+          this.state.showWeather && this.state.weatherData.map((el) => 
+          <Weather date={el.date} description={el.description} />)
+        }
+      
 
       <AlertMessage 
         errorCode={this.state.errorCode}
