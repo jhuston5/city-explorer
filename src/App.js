@@ -44,7 +44,7 @@ class App extends React.Component {
       });
 
       //Edited await to only include City Name in the search query
-      let allWeatherArr = await axios.get(`http://localhost:3001/weather?searchQuery=${this.state.cityName}`);
+      let allWeatherArr = await axios.get(`http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}`);
       console.log(allWeatherArr);
 
       this.setState({
@@ -94,6 +94,7 @@ class App extends React.Component {
         />
 
       {/* {this.props.weatherData.map} */}
+      <h4>Weather Data</h4>
       {
           this.state.showWeather && this.state.weatherData.map((el) => 
           <Weather date={el.date} description={el.description} />)
