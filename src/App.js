@@ -4,6 +4,7 @@ import axios from 'axios';
 import Map from './components/Map.js'
 import AlertMessage  from './components/AlertMessage.js';
 import Weather from './components/Weather';
+import Movie from './components/Movie';
 
 class App extends React.Component {
   constructor(props){
@@ -15,7 +16,9 @@ class App extends React.Component {
       mapImg: '',  
       errorCode: '',   
       errorAlert: false,
-      showWeather: false
+      showWeather: false,
+      movieData: [],
+      showMovie: false
     }
     //functions
   }
@@ -38,7 +41,7 @@ class App extends React.Component {
         locationObj: locData.data[0]
       });
 
-      let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.locationObj.lat},${this.state.locationObj.lon}&zoom=12`;
+      let mapURL = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATION_API_KEY}&center=${this.state.locationObj.lat},${this.state.locationObj.lon}&zoom=12&size=500x500`;
       this.setState({
         mapImg: mapURL
       });
@@ -46,10 +49,15 @@ class App extends React.Component {
       //Edited await to only include City Name in the search query
       let allWeatherArr = await axios.get(`http://localhost:3001/weather?lat=${this.state.locationObj.lat}&lon=${this.state.locationObj.lon}`);
       console.log(allWeatherArr);
-
       this.setState({
         weatherData: allWeatherArr.data,
         showWeather: true
+      })
+
+      let allMovieArr = await axios.get(`http://localhost:3001/movie?cityName=${this.state.cityName}`);
+      this.setState({
+        movieData: allMovieArr.data,
+        showMovie: true
       })
 
      console.log(this.state.weatherData);
@@ -98,6 +106,21 @@ class App extends React.Component {
       {
           this.state.showWeather && this.state.weatherData.map((el) => 
           <Weather date={el.date} description={el.description} />)
+        }
+
+      <h4>Movie Data</h4>
+      {
+          this.state.showMovie && this.state.movieData.map((el) => 
+          <Movie 
+          title= {el.title}
+          overview= {el.overview}
+          averageVotes= {el.averageVotes}
+          totalVotes= {el.totalVotes}
+          imageURL= {el.imageURL}
+          popularity= {el.popularity}
+          releasedOn= {el.releas}
+          
+         />)
         }
       
 
