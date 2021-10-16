@@ -3,8 +3,9 @@ import React from 'react';
 import axios from 'axios';
 import Map from './components/Map.js'
 import AlertMessage  from './components/AlertMessage.js';
-import Weather from './components/Weather';
-import Movie from './components/Movie';
+import Weather from './components/WeatherDay/Weather';
+import Movie from './components/Movies/Movie';
+import Row from 'react-bootstrap/Row';
 
 class App extends React.Component {
   constructor(props){
@@ -109,6 +110,7 @@ class App extends React.Component {
         }
 
       <h4>Movie Data</h4>
+      <Row xs={1} md={4} className="g-4">
       {
           this.state.showMovie && this.state.movieData.map((el) => 
           <Movie 
@@ -118,11 +120,11 @@ class App extends React.Component {
           totalVotes= {el.totalVotes}
           imageURL= {el.imageURL}
           popularity= {el.popularity}
-          releasedOn= {el.releas}
+          releasedOn= {el.releasedOn}
           
          />)
         }
-      
+       </Row>
 
       <AlertMessage 
         errorCode={this.state.errorCode}
