@@ -39,3 +39,11 @@ Actual time needed to complete: 1.5 hours
 Estimate of time needed to complete: 2 hours
 
 Actual time needed to complete: 1 hour. Starting to finally internalize state and props to build components!
+
+# Cache Feature:
+
+10.20.21 - Set the cache to store memory locally
+I thought this would take significantly longer than it did. Expectation was that it would take 2 hours and it took less than 1.
+
+
+ ![WRRC API](/images/WRRC_cache.png)
